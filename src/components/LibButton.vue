@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted, onUpdated } from 'vue';
+import { reactive, ref, onMounted, onUpdated, h,createElementVNode } from 'vue';
 
 interface Props {
   primary?: boolean;
@@ -14,6 +14,7 @@ const size = reactive({
 })
 const canvas = ref<HTMLCanvasElement>()
 const table = ref(null)
+const divv = ref<HTMLDivElement>()
 
 const { primary } = reactive(props);
 
@@ -49,13 +50,17 @@ function grow() {
 function draw() {
   manager.drawGrid(4, 4, 1, 'black');
 }
-
+const a1 = document.createElement("span");
+a1.innerHTML = "span"
 onMounted(() => {
   console.log("canvas", canvas.value)
   console.log("table", table.value)
   if (canvas.value)
     manager.setContext(canvas.value.getContext('2d'));
   draw();
+
+  if (divv.value)
+    divv.value.appendChild(a1);
 })
 
 onUpdated(() => {
@@ -65,6 +70,7 @@ onUpdated(() => {
 
 <template>
   <div>
+    <div ref="divv"></div>
     <button @click="grow">Grow</button>
     <canvas
       ref="canvas"
